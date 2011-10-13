@@ -69,25 +69,35 @@ def file_source(filename, start, duration, position, window_sizes):
     row, col = position
     width, height = window_sizes
 
+
     compo = gst.element_factory_make("gnlcomposition")
     compo.add(gsrc)
+    bin.add(compo)
 
-    scale = gst.element_factory_make("videoscale")
+    queue = gst.element_factory_make("queue")
+    bin.add(queue)
     def on_pad(comp, pad, elements):
         convpad = elements.get_compatible_pad(pad, pad.get_caps())
         pad.link(convpad)
-    compo.connect("pad-added", on_pad, scale)
+    compo.connect("pad-added", on_pad, queue)
+
+
+    scale = gst.element_factory_make("videoscale")
+    bin.add(scale)
+    queue.link(scale)
+    
 
     filter = gst.element_factory_make("capsfilter")
+    bin.add(filter)
     filter.set_property("caps", gst.Caps("video/x-raw-yuv, width=%d, height=%d" % (width, height)))
     scale.link(filter)
 
     videobox = gst.element_factory_make("videobox")
+    bin.add(videobox)
     videobox.props.top = -(col * height)
     videobox.props.left = -(row * width)
+    print "\t", videobox.props.top, videobox.props.left
     filter.link(videobox)
-
-    bin.add(compo, scale, filter, videobox)
 
     bin.add_pad(gst.GhostPad("src", videobox.get_pad("src")))
 
@@ -116,7 +126,7 @@ def main(args):
     print "The source is %d sec long, there will be %s windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, window_duration/gst.SECOND)
     for row, col in [(row, col) for row in range(rows) for col in range(cols)]:
         start = long(col * window_duration  + row *(window_duration * cols))
-        print row, col, start/gst.SECOND
+        print row, col
 
         window_source = file_source(source, start, window_duration, (row, col), (window_width, window_height))
         pipeline.add(window_source)
