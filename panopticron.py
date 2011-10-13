@@ -153,6 +153,8 @@ def main():
     pipeline.add(sink)
     mux.link(sink)
 
+    # TODO alpha transparency? only showing one video
+
     loop = gobject.MainLoop(is_running=True)
     bus = pipeline.get_bus()
     bus.add_signal_watch()
