@@ -46,9 +46,9 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     fileuri = "file://" + os.path.abspath(filename)
     gsrc = gst.element_factory_make("gnlfilesource")
     gsrc.props.location       = fileuri
-    gsrc.props.start          = start
+    gsrc.props.start          = 0
     gsrc.props.duration       = duration
-    gsrc.props.media_start    = 0
+    gsrc.props.media_start    = start
     gsrc.props.media_duration = duration
 
     row, col = position
