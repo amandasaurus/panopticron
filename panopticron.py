@@ -88,7 +88,6 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
 def main():
     source = "source.mov"
 
-    output_width, output_height = 640, 480
 
     source_width, source_height = width_height(source)
 
@@ -98,7 +97,7 @@ def main():
     num_windows = rows * cols
     window_duration = source_duration / num_windows
 
-    window_width, window_height = output_width / rows, output_width / cols
+    window_width, window_height = int(source_width / rows), int(source_width / cols)
 
     pipeline = gst.Pipeline()
     mix = gst.element_factory_make("videomixer")
