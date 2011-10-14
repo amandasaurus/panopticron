@@ -77,6 +77,7 @@ def file_source(filename, start, duration, position, window_sizes):
     bin.add(videobox)
     videobox.props.top = -(col * height)
     videobox.props.left = -(row * width)
+    videobox.set_property("border-alpha", 0.0)
     print "\t", videobox.props.top, videobox.props.left
     filter.link(videobox)
 
@@ -133,8 +134,6 @@ def main():
     sink.props.location = "output.ogv"
     pipeline.add(sink)
     mux.link(sink)
-
-    # TODO alpha transparency? only showing one video
 
     loop = gobject.MainLoop(is_running=True)
     bus = pipeline.get_bus()
