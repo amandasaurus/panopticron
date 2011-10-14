@@ -77,8 +77,7 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     bin.add(videobox)
     videobox.props.top = -(col * height)
     videobox.props.left = -(row * width)
-    videobox.set_property("border-alpha", 0.0)
-    print "\t", videobox.props.top, videobox.props.left
+    videobox.set_property("border-alpha", 0)
     filter.link(videobox)
 
     bin.add_pad(gst.GhostPad("src", videobox.get_pad("src")))
