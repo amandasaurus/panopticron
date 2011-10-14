@@ -85,13 +85,17 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     return bin
 
 
-def main():
-    source = "source.mov"
+def main(args):
+    parser = OptionParser()
+    parser.add_option("-o", '--output', dest="output_filename", default="output.ogv")
+    parser.add_option("-s", "--size", dest="size", default=4)
 
+    options, source = parser.parse_args()
+    source = os.path.abspath(source[0])
 
     source_width, source_height = width_height(source)
 
-    rows, cols = 6, 6
+    rows, cols = int(options.size), int(options.size)
 
     source_duration = duration(source)
     num_windows = rows * cols
@@ -128,7 +132,7 @@ def main():
     venc.link(mux)
 
     sink = gst.element_factory_make("filesink")
-    sink.props.location = "output.ogv"
+    sink.props.location = options.output_filename
     pipeline.add(sink)
     mux.link(sink)
 
@@ -148,4 +152,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
