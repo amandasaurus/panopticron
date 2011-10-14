@@ -37,24 +37,6 @@ def width_height(filepath):
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
-def music_stream(music_filename, music_start, all_video_files, transition_length):
-    music_start = float(music_start)
-    music_start = long(music_start * gst.SECOND)
-        
-    assert os.path.isfile(music_filename)
-    file_lengths = sum(duration(x) for x in all_video_files) - transition_length * (len(all_video_files) - 1)
-
-    music_src = gst.element_factory_make("gnlfilesource")
-    music_src.props.location = "file://"+os.path.abspath(music_filename)
-    music_src.props.start          = 0
-    music_src.props.duration       = file_lengths
-    music_src.props.media_start    = music_start
-    music_src.props.media_duration = file_lengths
-    music_src.props.priority       = 1
-    acomp = gst.element_factory_make("gnlcomposition")
-    acomp.add(music_src)
-    return acomp
-
 def file_source(filename, start, duration, position, window_sizes):
     bin = gst.Bin()
 
@@ -85,7 +67,6 @@ def file_source(filename, start, duration, position, window_sizes):
     scale = gst.element_factory_make("videoscale")
     bin.add(scale)
     queue.link(scale)
-    
 
     filter = gst.element_factory_make("capsfilter")
     bin.add(filter)
