@@ -54,17 +54,14 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     row, col = position
     width, height = window_sizes
 
-
-    compo = gst.element_factory_make("gnlcomposition")
-    compo.add(gsrc)
-    bin.add(compo)
+    bin.add(gsrc)
 
     queue = gst.element_factory_make("queue")
     bin.add(queue)
     def on_pad(comp, pad, elements):
         convpad = elements.get_compatible_pad(pad, pad.get_caps())
         pad.link(convpad)
-    compo.connect("pad-added", on_pad, queue)
+    gsrc.connect("pad-added", on_pad, queue)
 
 
     scale = gst.element_factory_make("videoscale")
