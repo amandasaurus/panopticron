@@ -106,7 +106,6 @@ def main():
     print "The source is %d sec long, there will be %s windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, window_duration/gst.SECOND)
     for row, col in [(row, col) for row in range(rows) for col in range(cols)]:
         start = long(col * window_duration  + row *(window_duration * cols))
-        print row, col
 
         window_source = file_source(source, start, window_duration, (row, col), (window_width, window_height), source_duration)
         pipeline.add(window_source)
