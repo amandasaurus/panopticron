@@ -37,8 +37,11 @@ def width_height(filepath):
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
-def file_source(filename, start, duration, position, window_sizes):
+def file_source(filename, start, duration, position, window_sizes, source_duration):
     bin = gst.Bin()
+
+    if start >= source_duration:
+        return None
 
     fileuri = "file://" + os.path.abspath(filename)
     gsrc = gst.element_factory_make("gnlfilesource")
@@ -110,7 +113,7 @@ def main():
         start = long(col * window_duration  + row *(window_duration * cols))
         print row, col
 
-        window_source = file_source(source, start, window_duration, (row, col), (window_width, window_height))
+        window_source = file_source(source, start, window_duration, (row, col), (window_width, window_height), source_duration)
         pipeline.add(window_source)
         window_source.link(mix)
 
