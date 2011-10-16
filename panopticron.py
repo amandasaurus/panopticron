@@ -38,7 +38,7 @@ def width_height(filepath):
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
-def file_source(filename, start, duration, (rows, cols), (width, height)):
+def file_source(filename, start, duration, (row, col), (width, height)):
     bin = gst.Bin()
 
     fileuri = "file://" + os.path.abspath(filename)
