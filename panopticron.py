@@ -31,9 +31,14 @@ def width_height(filepath):
     source.set_property("location", filepath)
     pipeline.set_state(gst.STATE_PLAYING)
     pipeline.get_state()
-    pad = list(pipeline.get_by_name("decoder").src_pads())[1]
-    caps = pad.get_caps()[0]
-    width, height =  caps['width'], caps['height']
+    for pad in list(pipeline.get_by_name("decoder").src_pads()):
+        try:
+            caps = pad.get_caps()[0]
+            width, height =  caps['width'], caps['height']
+            break
+        except:
+            continue
+
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
