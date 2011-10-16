@@ -90,9 +90,9 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
     pipeline = gst.Pipeline()
 
     if intermediate_filename is not None:
-        filesource = gst.element_factory_make("filesource")
-        pipeline.add(filesource)
+        filesource = gst.element_factory_make("filesrc")
         filesource.set_property("location", intermediate_filename)
+        pipeline.add(filesource)
 
         y4mdec = gst.element_factory_make("y4mdec")
         pipeline.add(y4mdec)
