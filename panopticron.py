@@ -115,11 +115,15 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
     else:
         mix.link(y4menc)
 
+    progressreport = gst.element_factory_make("progressreport")
+    pipeline.add(progressreport)
+    y4menc.link(progressreport)
+
 
     sink = gst.element_factory_make("filesink")
     sink.props.location = new_intermediate_file
     pipeline.add(sink)
-    y4menc.link(sink)
+    progressreport.link(sink)
 
     play_pipeline(pipeline)
 
