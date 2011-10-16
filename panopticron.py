@@ -109,8 +109,8 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
         mix = gst.element_factory_make("videomixer")
         pipeline.add(mix)
 
+        y4mdec.link(mix)
         this_window.link(mix)
-        filesource.link(mix)
 
     _, new_intermediate_file = tempfile.mkstemp(prefix="panopticron.", suffix=".y4m")
     print new_intermediate_file
