@@ -41,6 +41,9 @@ def width_height(filepath):
 def file_source(filename, start, duration, (row, col), (width, height)):
     bin = gst.Bin()
 
+    compo = gst.element_factory_make("gnlcomposition")
+    bin.add(compo)
+
     fileuri = "file://" + os.path.abspath(filename)
     gsrc = gst.element_factory_make("gnlfilesource")
     gsrc.props.location       = fileuri
@@ -49,14 +52,14 @@ def file_source(filename, start, duration, (row, col), (width, height)):
     gsrc.props.media_start    = start
     gsrc.props.media_duration = duration
 
-    bin.add(gsrc)
+    compo.add(gsrc)
 
     queue = gst.element_factory_make("queue")
     bin.add(queue)
     def on_pad(comp, pad, elements):
         convpad = elements.get_compatible_pad(pad, pad.get_caps())
         pad.link(convpad)
-    gsrc.connect("pad-added", on_pad, queue)
+    compo.connect("pad-added", on_pad, queue)
 
 
     scale = gst.element_factory_make("videoscale")
