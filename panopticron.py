@@ -142,38 +142,6 @@ def main(args):
 
     window_width, window_height = int(source_width / rows), int(source_width / cols)
 
-    pipeline = gst.Pipeline()
-    mix = gst.element_factory_make("videomixer")
-    pipeline.add(mix)
-
-    print "The source is %d sec long, there will be %s windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, window_duration/gst.SECOND)
-    for row, col in [(row, col) for row in range(rows) for col in range(cols)]:
-        start = long(col * window_duration  + row *(window_duration * cols))
-
-        window_source = file_source(source, start, window_duration, (row, col), (window_width, window_height), source_duration)
-        pipeline.add(window_source)
-        window_source.link(mix)
-
-    ffmpeg = gst.element_factory_make("ffmpegcolorspace")
-    pipeline.add(ffmpeg)
-    mix.link(ffmpeg)
-
-    prog = gst.element_factory_make("progressreport")
-    pipeline.add(prog)
-    ffmpeg.link(prog)
-
-    venc = gst.element_factory_make("theoraenc")
-    pipeline.add(venc)
-    prog.link(venc)
-
-    mux = gst.element_factory_make("oggmux")
-    pipeline.add(mux)
-    venc.link(mux)
-
-    sink = gst.element_factory_make("filesink")
-    sink.props.location = options.output_filename
-    pipeline.add(sink)
-    mux.link(sink)
 
 def play_pipeline(pipeline):
     loop = gobject.MainLoop(is_running=True)
