@@ -73,7 +73,6 @@ def file_source(filename, start, duration, (rows, cols), (row, col), (width, hei
 
     videobox = gst.element_factory_make("videobox")
     bin.add(videobox)
-    print "Top %d bottom %d" % (-(col * height), -((cols - col) * height))
     videobox.props.top = -(row * height)
     videobox.props.bottom = -((rows - row) * height)
     videobox.props.left = -(col * width)
