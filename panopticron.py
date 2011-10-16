@@ -109,6 +109,9 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
         y4mdec.link(mix)
         this_window.link(mix)
 
+        mix.get_pad("sink_0").set_property("zorder", 1)
+        mix.get_pad("sink_1").set_property("zorder", 0)
+
     _, new_intermediate_file = tempfile.mkstemp(prefix="panopticron.", suffix=".y4m")
     print new_intermediate_file
 
