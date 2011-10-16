@@ -175,6 +175,7 @@ def main(args):
     pipeline.add(sink)
     mux.link(sink)
 
+def play_pipeline(pipeline):
     loop = gobject.MainLoop(is_running=True)
     bus = pipeline.get_bus()
     bus.add_signal_watch()
@@ -188,7 +189,6 @@ def main(args):
     pipeline.set_state(gst.STATE_PLAYING)
     loop.run()
     pipeline.set_state(gst.STATE_NULL)
-
 
 if __name__ == '__main__':
     main(sys.argv[1:])
