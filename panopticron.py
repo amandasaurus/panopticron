@@ -1,4 +1,5 @@
 #! /usr/bin/python
+# -*- encoding: utf-8 -*-
 
 from __future__ import division
 
@@ -112,7 +113,7 @@ def main(args):
     mix = gst.element_factory_make("videomixer")
     pipeline.add(mix)
 
-    print "The source is %d sec long, there will be %s windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, window_duration/gst.SECOND)
+    print "The source is %d sec long, there will be %s (%d×%d) windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, cols, rows, window_duration/gst.SECOND)
     for row, col in [(row, col) for row in range(rows) for col in range(cols)]:
         start = long(col * window_duration  + row *(window_duration * cols))
 
