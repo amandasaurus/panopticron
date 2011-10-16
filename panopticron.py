@@ -2,7 +2,7 @@
 
 from __future__ import division
 
-import sys, os.path
+import sys, os.path, os
 import gobject
 import pygst
 pygst.require("0.10")
@@ -142,6 +142,10 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
         # finished
         print "Done"
         return
+
+    if intermediate_filename is not None:
+        print "Remving old intermediate file ", intermediate_filename
+        os.remove(intermediate_filename)
 
     one_iteration(new_intermediate_file, source_filename, source_duration, (source_width, source_height), (rows, cols), (row, col))
 
