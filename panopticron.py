@@ -128,6 +128,18 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
 
     play_pipeline(pipeline)
 
+    col += 1
+    if col >= cols:
+        row += 1
+        col = 0
+
+    if row >= rows:
+        # finished
+        print "Done"
+        return
+
+    one_iteration(new_intermediate_file, source_filename, source_duration, (source_width, source_height), (rows, cols), (row, col))
+
 
 def main(args):
     parser = OptionParser()
