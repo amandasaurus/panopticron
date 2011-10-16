@@ -142,6 +142,7 @@ def main(args):
 
     window_width, window_height = int(source_width / rows), int(source_width / cols)
 
+    print "The source is %d sec long, there will be %s windows, each will show %d sec" % (source_duration/gst.SECOND, num_windows, window_duration/gst.SECOND)
     one_iteration(None, source, source_duration, (source_width, source_height), (rows, cols), (0, 0))
 
 
