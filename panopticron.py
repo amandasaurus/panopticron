@@ -38,7 +38,7 @@ def width_height(filepath):
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
-def file_source(filename, start, duration, (row, col), (width, height)):
+def file_source(filename, start, duration, (rows, cols), (row, col), (width, height)):
     bin = gst.Bin()
 
     compo = gst.element_factory_make("gnlcomposition")
@@ -73,8 +73,11 @@ def file_source(filename, start, duration, (row, col), (width, height)):
 
     videobox = gst.element_factory_make("videobox")
     bin.add(videobox)
+    print "Top %d bottom %d" % (-(col * height), -((cols - col) * height))
     videobox.props.top = -(col * height)
+    videobox.props.bottom = -((cols - col) * height)
     videobox.props.left = -(row * width)
+    videobox.props.right = -((rows - row) * width)
     videobox.set_property("border-alpha", 0)
     filter.link(videobox)
 
@@ -99,7 +102,7 @@ def one_iteration(intermediate_filename, source_filename, source_duration, (sour
     start = long(col * window_duration  + row *(window_duration * cols))
     window_width, window_height = int(source_width / rows), int(source_width / cols)
 
-    this_window = file_source(source_filename, start, window_duration, (row, col), (window_width, window_height))
+    this_window = file_source(source_filename, start, window_duration, (rows, cols), (row, col), (window_width, window_height))
     pipeline.add(this_window)
 
     if intermediate_filename is not None:
