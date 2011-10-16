@@ -95,11 +95,24 @@ def main(args):
     parser = OptionParser()
     parser.add_option("-o", '--output', dest="output_filename", default="output.ogv")
     parser.add_option("-s", "--size", dest="size", default=4)
+    parser.add_option("-w", "--width", default=None)
+    parser.add_option("--height", default=None)
 
     options, source = parser.parse_args()
     source = os.path.abspath(source[0])
 
     source_width, source_height = width_height(source)
+
+    assert not (options.width is not None and options.height is not None)
+    if options.width is not None:
+        output_width = int(options.width)
+        output_height = int((source_height * output_width ) / source_width)
+    elif options.height is not None:
+        output_height = int(options.height)
+        output_width = int(( source_width * output_height ) / source_height )
+    else:
+        output_width, output_height = source_width, source_height
+
 
     rows, cols = int(options.size), int(options.size)
 
@@ -107,7 +120,7 @@ def main(args):
     num_windows = rows * cols
     window_duration = source_duration / num_windows
 
-    window_width, window_height = int(source_width / rows), int(source_width / cols)
+    window_width, window_height = int(output_height / rows), int(output_width / cols)
 
     pipeline = gst.Pipeline()
     mix = gst.element_factory_make("videomixer")
