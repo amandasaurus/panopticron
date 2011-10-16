@@ -80,6 +80,7 @@ def file_source(filename, start, duration, (row, col), (width, height)):
     return bin
 
 def one_iteration(intermediate_filename, source_filename, source_duration, (source_width, source_height), (rows, cols), (row, col)):
+    print "Doing (%d, %s)" % (row, col)
     pipeline = gst.Pipeline()
 
     if intermediate_filename is not None:
