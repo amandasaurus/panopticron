@@ -75,8 +75,8 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
 
     videobox = gst.element_factory_make("videobox")
     bin.add(videobox)
-    videobox.props.top = -(col * height)
-    videobox.props.left = -(row * width)
+    videobox.props.top = -(row * height)
+    videobox.props.left = -(col * width)
     videobox.set_property("border-alpha", 0)
     filter.link(videobox)
 
