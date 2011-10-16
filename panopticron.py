@@ -75,8 +75,8 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     queue.link(scale)
 
     filter = gst.element_factory_make("capsfilter")
-    bin.add(filter)
     filter.set_property("caps", gst.Caps("video/x-raw-yuv, width=%d, height=%d" % (width, height)))
+    bin.add(filter)
     scale.link(filter)
 
     videobox = gst.element_factory_make("videobox")
