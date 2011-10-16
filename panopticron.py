@@ -142,6 +142,8 @@ def main(args):
 
     window_width, window_height = int(source_width / rows), int(source_width / cols)
 
+    one_iteration(None, source, source_duration, (source_width, source_height), (rows, cols), (0, 0))
+
 
 def play_pipeline(pipeline):
     loop = gobject.MainLoop(is_running=True)
