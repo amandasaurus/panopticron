@@ -37,11 +37,8 @@ def width_height(filepath):
     pipeline.set_state(gst.STATE_NULL)
     return width, height
 
-def file_source(filename, start, duration, position, window_sizes, source_duration):
+def file_source(filename, start, duration, (rows, cols), (width, height)):
     bin = gst.Bin()
-
-    if start >= source_duration:
-        return None
 
     fileuri = "file://" + os.path.abspath(filename)
     gsrc = gst.element_factory_make("gnlfilesource")
@@ -50,9 +47,6 @@ def file_source(filename, start, duration, position, window_sizes, source_durati
     gsrc.props.duration       = duration
     gsrc.props.media_start    = start
     gsrc.props.media_duration = duration
-
-    row, col = position
-    width, height = window_sizes
 
     bin.add(gsrc)
 
